@@ -11,7 +11,11 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
-    - name: Build static site
-      run: yarn install && npm run-script build
+    # - name: Build static site
+    #   run: yarn install && npm run-script build
     - name: Deploy static site to S3 bucket
       run: aws s3 sync . s3://agustingonzaleznicolini.com --delete
+    - name: Deploy static site to S3 bucket
+      run: aws s3 sync . s3://agustingonzaleznicolini.com --delete
+    - name: Run CF invalidation
+      run: aws cloudfront create-invalidation --distribution-id ${{ secrets.PORTFOLIO_DISTRIBUTION_ID }} --paths "/*"
